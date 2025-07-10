@@ -1,0 +1,3 @@
+/mnt/c/wsl/RayTracer/games101/hw6/build/CMakeFiles/RayTracing.dir
+/mnt/c/wsl/RayTracer/games101/hw6/build/CMakeFiles/edit_cache.dir
+/mnt/c/wsl/RayTracer/games101/hw6/build/CMakeFiles/rebuild_cache.dir
