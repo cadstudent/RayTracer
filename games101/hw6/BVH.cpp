@@ -92,7 +92,9 @@ BVHBuildNode* BVHAccel::recursiveBuild(std::vector<Object*> objects)
 
     return node;
 }
-
+BVHBuildNode* BVHAccel::SAHBuild(std::vector<Object*> objects){
+    
+}
 Intersection BVHAccel::Intersect(const Ray& ray) const
 {
     Intersection isect;
