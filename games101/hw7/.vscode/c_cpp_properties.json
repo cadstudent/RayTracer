@@ -1,0 +1,20 @@
+
+{
+  "configurations": [
+    {
+      "name": "Project Scope",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "browse": {
+        "path": ["${workspaceFolder}"],
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "defines": [],
+      "compilerPath": "/usr/bin/gcc", 
+      "cStandard": "c17",
+      "cppStandard": "c++17"
+    }
+  ],
+  "version": 4
+}

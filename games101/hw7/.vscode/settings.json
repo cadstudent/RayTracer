@@ -1,0 +1,14 @@
+
+{
+  "C_Cpp.default.includePath": ["${workspaceFolder}"],
+  "search.exclude": {
+    "**/build": true,
+    "**/.git": true,
+    "**/external": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true
+  },
+  "C_Cpp.intelliSenseEngineFallback": "Disabled"
+}
