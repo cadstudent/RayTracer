@@ -7,7 +7,7 @@
 
 #include "Vector.hpp"
 
-enum MaterialType { DIFFUSE};
+enum MaterialType { DIFFUSE, MICROFACET};
 
 class Material{
 private:
@@ -92,9 +92,10 @@ public:
     float ior;
     Vector3f Kd, Ks;
     float specularExponent;
+    float roughness;
     //Texture tex;
 
-    inline Material(MaterialType t=DIFFUSE, Vector3f e=Vector3f(0,0,0));
+    inline Material(MaterialType t=DIFFUSE, Vector3f e=Vector3f(0,0,0), float r=1.0f);
     inline MaterialType getType();
     //inline Vector3f getColor();
     inline Vector3f getColorAt(double u, double v);
@@ -110,10 +111,11 @@ public:
 
 };
 
-Material::Material(MaterialType t, Vector3f e){
+Material::Material(MaterialType t, Vector3f e, float r){
     m_type = t;
     //m_color = c;
     m_emission = e;
+    roughness = r;
 }
 
 MaterialType Material::getType(){return m_type;}
@@ -163,11 +165,64 @@ Vector3f Material::eval(const Vector3f &wi, const Vector3f &wo, const Vector3f &
     switch(m_type){
         case DIFFUSE:
         {
-            // calculate the contribution of diffuse   model
+            // calculate the contribution of diffuse model
             float cosalpha = dotProduct(N, wo);
             if (cosalpha > 0.0f) {
                 Vector3f diffuse = Kd / M_PI;
                 return diffuse;
+            }
+            else
+                return Vector3f(0.0f);
+            break;
+        }
+        case MICROFACET:
+        {
+            float cosalpha = dotProduct(N, wo);
+            if (cosalpha > 0.0f) 
+            {
+                // calculate the contribution of Microfacet model
+                float F, G, D;
+
+                fresnel(wi, N, ior, F);
+
+                //float Roughness = 1;//超参数，控制粗糙度
+                auto G_function = [&](const float& Roughness, const Vector3f& wi, const Vector3f& wo, const Vector3f& N)
+                {
+                    float A_wi, A_wo;
+                    A_wi = (-1 + sqrt(1 + Roughness * Roughness * pow(tan(acos(dotProduct(wi, N))), 2))) / 2;
+                    A_wo = (-1 + sqrt(1 + Roughness * Roughness * pow(tan(acos(dotProduct(wo, N))), 2))) / 2;
+                    float divisor = (1 + A_wi + A_wo);
+                    if (divisor < 0.001)
+                        return 1.f;
+                    else
+                        return 1.0f / divisor;
+                };
+                G = G_function(roughness, -wi, wo, N);
+
+                auto D_function = [&](const float& Roughness, const Vector3f& h, const Vector3f& N)
+                {
+                    float cos_sita = dotProduct(h, N);
+                    float divisor = (M_PI * pow(1.0 + cos_sita * cos_sita * (Roughness * Roughness - 1), 2));
+                    if (divisor < 0.001)
+                        return 1.f;
+                    else 
+                        return (Roughness * Roughness) / divisor;
+                };
+                Vector3f h = normalize(-wi + wo);
+                D = D_function(roughness, h, N);
+
+                // energy balance
+                Vector3f diffuse = (Vector3f(1.0f) - F) * Kd / M_PI;
+                Vector3f specular;
+                float divisor= ((4 * (dotProduct(N, -wi)) * (dotProduct(N, wo))));
+                if (divisor < 0.001)
+                    specular= Vector3f(1);
+                else
+                    specular = F *G * D / divisor;
+                //std::cout << "F:"<<F << "\n";
+                //std::cout << "diffuse:"<<diffuse<<"\n";
+                //std::cout << "specular:" << specular << "\n";
+                return diffuse+specular;
             }
             else
                 return Vector3f(0.0f);

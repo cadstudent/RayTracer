@@ -14,7 +14,8 @@ int main(int argc, char** argv)
 {
 
     // Change the definition here to change resolution
-    Scene scene(512, 512);
+    //Scene scene(1024, 1024);
+    Scene scene(768, 768);
 
     Material* red = new Material(DIFFUSE, Vector3f(0.0f));
     red->Kd = Vector3f(0.63f, 0.065f, 0.05f);
@@ -26,15 +27,23 @@ int main(int argc, char** argv)
     light->Kd = Vector3f(0.65f);
 
     MeshTriangle floor("../models/cornellbox/floor.obj", white);
-    MeshTriangle shortbox("../models/cornellbox/shortbox.obj", white);
-    MeshTriangle tallbox("../models/cornellbox/tallbox.obj", white);
+    //MeshTriangle shortbox("../models/cornellbox/shortbox.obj", white);
+    //MeshTriangle tallbox("../models/cornellbox/tallbox.obj", white);
     MeshTriangle left("../models/cornellbox/left.obj", red);
     MeshTriangle right("../models/cornellbox/right.obj", green);
     MeshTriangle light_("../models/cornellbox/light.obj", light);
 
+
+    Material* microfacet = new Material(MICROFACET, Vector3f(0.0f),0.5f);
+    microfacet->Ks = Vector3f(0.45, 0.45, 0.45);
+    microfacet->Kd = Vector3f(0.3, 0.3, 0.25);
+    microfacet->ior = 12.85;
+    Sphere sphere1(Vector3f(150, 100, 200), 100, microfacet);
+
+    scene.Add(&sphere1);
     scene.Add(&floor);
-    scene.Add(&shortbox);
-    scene.Add(&tallbox);
+    //scene.Add(&shortbox);
+    //scene.Add(&tallbox);
     scene.Add(&left);
     scene.Add(&right);
     scene.Add(&light_);

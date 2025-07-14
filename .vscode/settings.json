@@ -1,0 +1,8 @@
+{
+    "cmake.sourceDirectory": "/mnt/c/wsl/RayTracer/games101/hw6",
+    "files.associations": {
+        "limits": "cpp",
+        "array": "cpp",
+        "chrono": "cpp"
+    }
+}

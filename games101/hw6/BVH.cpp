@@ -134,12 +134,29 @@ BVHBuildNode* BVHAccel::recursiveBuild(std::vector<Object*> objects)
                     minCostSplitBucket = i;
                 }
             }
-            auto beginning = objects.begin();
-            auto middling = objects.begin() + objects.size()*minCostSplitBucket/buckt;
-            auto ending = objects.end();
+            //auto beginning = objects.begin();
+            //auto middling = objects.begin() + objects.size()*minCostSplitBucket/buckt;
+            //auto ending = objects.end();
+//
+            //auto leftshapes = std::vector<Object*>(beginning, middling);
+            //auto rightshapes = std::vector<Object*>(middling, ending);
+                          int splitIndex = 0;
+            for (int i = 0; i <= minCostSplitBucket; ++i) {
+                splitIndex += buckets[i].size();
+            }
+            auto middling = objects.begin() + splitIndex; // 使用实际物体数量
 
-            auto leftshapes = std::vector<Object*>(beginning, middling);
-            auto rightshapes = std::vector<Object*>(middling, ending);
+            // 修正问题3：添加空集检查
+            if (splitIndex == 0 || splitIndex == objects.size()) {
+            // 降级为叶子节点
+                node->left = nullptr;
+                node->right = nullptr;
+                node->object = objects[0]; // 需要合并逻辑
+                return node;
+            }
+            auto leftshapes = std::vector<Object*>(objects.begin(), middling);
+            auto rightshapes = std::vector<Object*>(middling, objects.end());
+            
 
             assert(objects.size() == (leftshapes.size() + rightshapes.size()));
 
