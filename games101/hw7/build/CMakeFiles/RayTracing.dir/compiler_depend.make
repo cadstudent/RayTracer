@@ -544,7 +544,8 @@ CMakeFiles/RayTracing.dir/Renderer.cpp.o: ../Renderer.cpp \
   /usr/include/c++/11/backward/auto_ptr.h \
   /usr/include/c++/11/pstl/glue_memory_defs.h \
   /usr/include/c++/11/ctime \
-  ../Renderer.hpp
+  ../Renderer.hpp \
+  /usr/lib/gcc/x86_64-linux-gnu/11/include/omp.h
 
 CMakeFiles/RayTracing.dir/Scene.cpp.o: ../Scene.cpp \
   /usr/include/stdc-predef.h \
@@ -1433,6 +1434,8 @@ CMakeFiles/RayTracing.dir/main.cpp.o: ../main.cpp \
 /usr/include/c++/11/typeinfo:
 
 /usr/include/alloca.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/11/include/omp.h:
 
 /usr/include/c++/11/bits/refwrap.h:
 

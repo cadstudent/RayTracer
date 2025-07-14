@@ -8,3 +8,6 @@
 
 # 1024x1024x512spp with SAH 149min
 ![alt text](image-2.png)
+
+# 768x768x128spp && openMP && SAH && Microfacet >> 2min 
+![alt text](image-3.png)

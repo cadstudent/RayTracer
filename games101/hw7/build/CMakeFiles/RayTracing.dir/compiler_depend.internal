@@ -547,6 +547,7 @@ CMakeFiles/RayTracing.dir/Renderer.cpp.o
  /usr/include/c++/11/pstl/glue_memory_defs.h
  /usr/include/c++/11/ctime
  /mnt/c/wsl/RayTracer/games101/hw7/Renderer.hpp
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/omp.h
 
 CMakeFiles/RayTracing.dir/Scene.cpp.o
  /mnt/c/wsl/RayTracer/games101/hw7/Scene.cpp

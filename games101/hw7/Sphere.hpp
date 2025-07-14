@@ -26,8 +26,8 @@ public:
         float t0, t1;
         float area = 4 * M_PI * radius2;
         if (!solveQuadratic(a, b, c, t0, t1)) return false;
-        if (t0 < 0) t0 = t1;
-        if (t0 < 0) return false;
+        if (t0 < EPSILON) t0 = t1;
+        if (t0 < EPSILON) return false;
         return true;
     }
     bool intersect(const Ray& ray, float &tnear, uint32_t &index) const
@@ -40,13 +40,14 @@ public:
         float t0, t1;
         if (!
         solveQuadratic(a, b, c, t0, t1)) return false;
-        if (t0 < 0) t0 = t1;
-        if (t0 < 0) return false;
+        if (t0 < EPSILON) t0 = t1;
+        if (t0 < EPSILON) return false;
         tnear = t0;
 
         return true;
     }
     Intersection getIntersection(Ray ray){
+ 
         Intersection result;
         result.happened = false;
         Vector3f L = ray.origin - center;
@@ -57,13 +58,16 @@ public:
         if (!solveQuadratic(a, b, c, t0, t1)) return result;
         if (t0 < 0) t0 = t1;
         if (t0 < 0) return result;
-        result.happened=true;
+        if (t0 > 0.5)
+        {
+            result.happened = true;
+            result.coords = Vector3f(ray.origin + ray.direction * t0);
+            result.normal = normalize(Vector3f(result.coords - center));
+            result.m = this->m;
+            result.obj = this;
+            result.distance = t0;
+        }
 
-        result.coords = Vector3f(ray.origin + ray.direction * t0);
-        result.normal = normalize(Vector3f(result.coords - center));
-        result.m = this->m;
-        result.obj = this;
-        result.distance = t0;
         return result;
 
     }
